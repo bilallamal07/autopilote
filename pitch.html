@@ -209,7 +209,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 85%; /* Crop out top text portion - more aggressive */
+            object-position: center bottom; /* Show only bottom portion - no text */
+            transform: scale(1.5); /* Zoom to fill and hide text */
         }
 
         .image-overlay {
