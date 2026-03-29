@@ -477,6 +477,14 @@
         }
 
         /* Gratuit badge */
+        .gratuit-title {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 1.5rem;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
         .gratuit-badge {
             display: inline-flex;
             align-items: center;
@@ -488,29 +496,13 @@
             font-size: 0.875rem;
             color: #06b6d4;
             font-weight: 600;
-            margin-top: 1.5rem;
+            margin-top: 0.5rem;
         }
 
         .cta-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .gratuit-detail {
-            display: none;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 0.5rem;
-        }
-
-        @media (max-width: 767px) {
-            .gratuit-dash {
-                display: none;
-            }
-            .gratuit-detail {
-                display: block;
-            }
         }
 
         /* Slide 4 - CTA */
@@ -1177,10 +1169,13 @@
                         <span class="cta-icon" role="img" aria-label="Rocket">🚀</span>
                         <span>Remplir le formulaire</span>
                     </a>
+                    <p class="gratuit-title">Devis gratuit pour solopreneurs et TPE</p>
                     <div class="gratuit-badge">
-                        <span>✓</span> 100% Gratuit &amp; Sans engagement<span class="gratuit-dash"> — Analyse personnalisée en 24-48h</span>
+                        <span>✓</span> 100 % gratuit – Sans engagement
                     </div>
-                    <p class="gratuit-detail">Analyse personnalisée en 24-48h</p>
+                    <div class="gratuit-badge">
+                        <span>✓</span> Réponse personnalisée en 24-48h
+                    </div>
                 </div>
             </div>
         </div>
