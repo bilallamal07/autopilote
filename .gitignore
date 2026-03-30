@@ -37,6 +37,7 @@ lead form
 *.png
 !qr-code-pitch.png
 !qr-code-pitch-blue.png
+!automatisez.png
 
 # System files
 .DS_Store
