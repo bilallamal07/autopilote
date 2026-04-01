@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lang-toggle.css">
+    <link rel="alternate" hreflang="fr" href="./">
+    <link rel="alternate" hreflang="en-GB" href="./?lang=en">
     <style>
         /* ============================================
            CSS RESET & NORMALIZATION
@@ -191,6 +194,14 @@
             color: #cbd5e1;
             font-weight: 400;
             line-height: 1.5;
+        }
+
+        /* Slide 4 CTA — keep subtitle compact regardless of breakpoint */
+        [aria-labelledby="slide4-heading"] .subtitle {
+            font-size: 1rem !important;
+            max-width: 36rem;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Slide 1 - With Image (Mobile-first) */
@@ -956,16 +967,27 @@
         .slide {
             background: transparent;
         }
+
     </style>
 </head>
 <body>
+    <!-- Language toggle -->
+    <nav class="lang-toggle" aria-label="Language selector">
+        <button class="lang-btn active" id="btn-fr" aria-pressed="true" lang="fr">
+            <span class="flag" aria-hidden="true">🇫🇷</span> FR
+        </button>
+        <button class="lang-btn" id="btn-en" aria-pressed="false" lang="en">
+            <span class="flag" aria-hidden="true">🇬🇧</span> EN
+        </button>
+    </nav>
+
     <!-- Dark nebula background (fixed, full page) -->
     <div id="bg-gradient-container" aria-hidden="true">
         <div id="nebula-glow"></div>
         <div id="g-interactive"></div>
     </div>
     <!-- Skip to main content link for keyboard users -->
-    <a href="#main-content" class="skip-link">Passer au contenu principal</a>
+    <a href="#main-content" class="skip-link" data-i18n="skip-link">Passer au contenu principal</a>
 
     <!-- Main presentation content -->
     <main id="main-content" role="main">
@@ -975,7 +997,13 @@
         <div class="image-header">
             <img
                 src="automatisez.png"
+                data-src-fr="automatisez.png"
+                data-src-en="automatizer.jpg"
                 alt="Automatisez et développez votre activité - Solutions d'automatisation IA"
+                data-alt-fr="Automatisez et développez votre activité - Solutions d'automatisation IA"
+                data-alt-en="Automate and grow your business – AI Automation Solutions"
+                data-width-fr="2752" data-height-fr="1536"
+                data-width-en="1024" data-height-en="559"
                 loading="eager"
                 decoding="async"
                 width="2752"
@@ -985,12 +1013,12 @@
 
         <!-- Content Below Image -->
         <div class="content-below-image">
-            <h1 id="slide1-heading">
+            <h1 id="slide1-heading" data-i18n="slide1-h1">
                 <span class="gradient-text">Automatisez votre business</span>
             </h1>
             <div class="highlight-box">
-                <div class="big-number">Gagnez 10 à 15</div>
-                <div class="tagline">heures chaque semaine</div>
+                <div class="big-number" data-i18n="slide1-big-number">Gagnez 10 à 15</div>
+                <div class="tagline" data-i18n="slide1-tagline">heures chaque semaine</div>
             </div>
         </div>
         <div class="gradient-bar" role="presentation" aria-hidden="true"></div>
@@ -999,34 +1027,36 @@
     <!-- SLIDE 2: VOUS PERDEZ COMBIEN D'HEURES CHAQUE SEMAINE -->
     <section class="slide" aria-labelledby="slide2-heading" role="region">
         <div class="slide-content">
-            <h2 id="slide2-heading">
+            <div class="center-content">
+            <h2 id="slide2-heading" data-i18n="slide2-h2">
                 Vous perdez combien<br>
                 <span class="gradient-text">d'heures chaque semaine ?</span>
             </h2>
 
-            <p class="subtitle" style="font-size: clamp(0.95rem, 1.8vw, 1.15rem); line-height: 1.6; font-weight: 500;">
+            <p class="subtitle" style="font-size: clamp(0.95rem, 1.8vw, 1.15rem); line-height: 1.6; font-weight: 500;" data-i18n="slide2-subtitle">
                 <strong>AUTOMATISEZ & DÉVELOPPEZ-VOUS</strong><br>
                 Des solutions simples. Plus de productivité.<br>
                 Libérez du temps.
             </p>
+            </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">⏱️</div>
                     <div class="stat-value">73%</div>
-                    <div class="stat-description">des freelance, indépendant ou auto-entrepreneur perdent<br>10+ heures/semaine</div>
+                    <div class="stat-description" data-i18n="stat1-desc">des freelance, indépendant ou auto-entrepreneur perdent<br>10+ heures/semaine</div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-icon">💸</div>
                     <div class="stat-value">40%</div>
-                    <div class="stat-description">du temps perdu sur<br>des tâches manuelles</div>
+                    <div class="stat-description" data-i18n="stat2-desc">du temps perdu sur<br>des tâches manuelles</div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-icon">📉</div>
                     <div class="stat-value">-25%</div>
-                    <div class="stat-description">de productivité perdue<br>sans automatisation</div>
+                    <div class="stat-description" data-i18n="stat3-desc">de productivité perdue<br>sans automatisation</div>
                 </div>
             </div>
         </div>
@@ -1036,13 +1066,13 @@
     <!-- SLIDE 3: À QUOI VOUS ATTENDRE -->
     <section class="slide" aria-labelledby="slide3-heading" role="region">
         <div class="slide-content">
-            <h2 id="slide3-heading">
+            <h2 id="slide3-heading" data-i18n="slide3-h2">
                 <span class="gradient-text">À quoi vous attendre</span>
             </h2>
 
             <div class="intro-text">
-                <p class="intro-tagline">Automatisez vos tâches, libérez votre temps !</p>
-                <p class="intro-subtitle">(Conçu pour les solopreneurs et les petites entreprises, peu importe la taille.)</p>
+                <p class="intro-tagline" data-i18n="slide3-intro-tagline">Libérez votre temps et laissez l'automatisation s'occuper du reste !</p>
+                <p class="intro-subtitle" data-i18n="slide3-intro-subtitle">(Conçu pour les solopreneurs et les petites entreprises, quelle que soit leur taille.)</p>
             </div>
 
             <div class="benefits-list">
@@ -1050,9 +1080,9 @@
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                             <div class="benefit-number">01</div>
-                            <div class="benefit-title" style="margin-bottom: 0;">Ventes & Marketing</div>
+                            <div class="benefit-title" style="margin-bottom: 0;" data-i18n="benefit01-title">Ventes & Marketing</div>
                         </div>
-                        <div class="benefit-desc">
+                        <div class="benefit-desc" data-i18n="benefit01-desc">
                             <ul>
                                 <li><strong>Communication automatisée :</strong> Emails intelligents pour les confirmations de commande, les relances de paniers abandonnés, les campagnes promotionnelles ciblées et les réponses automatiques aux FAQ.</li>
                                 <li><strong>Gestion commerciale et CRM :</strong> Suivi des leads avec scoring et qualification automatique, génération de devis et factures, et fidélisation avec historique client centralisé et rappels de paiement.</li>
@@ -1068,9 +1098,9 @@
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                             <div class="benefit-number">02</div>
-                            <div class="benefit-title" style="margin-bottom: 0;">Opérations fluides</div>
+                            <div class="benefit-title" style="margin-bottom: 0;" data-i18n="benefit02-title">Opérations fluides</div>
                         </div>
-                        <div class="benefit-desc">
+                        <div class="benefit-desc" data-i18n="benefit02-desc">
                             <ul>
                                 <li><strong>Un support client qui répond même quand vous êtes hors ligne :</strong> réponses automatiques, tickets, FAQ intelligentes.</li>
                                 <li><strong>Une gestion financière claire et sans prise de tête :</strong> synchronisation des ventes, suivi des dépenses, reporting automatisé.</li>
@@ -1085,9 +1115,9 @@
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                             <div class="benefit-number">03</div>
-                            <div class="benefit-title" style="margin-bottom: 0;">Intégration complète</div>
+                            <div class="benefit-title" style="margin-bottom: 0;" data-i18n="benefit03-title">Intégration complète</div>
                         </div>
-                        <div class="benefit-desc">
+                        <div class="benefit-desc" data-i18n="benefit03-desc">
                             <ul>
                                 <li><strong>Tous vos outils connectés :</strong> Shopify, WordPress, Microsoft Excel (avec OneDrive/SharePoint), et bien plus — une seule plateforme, une seule source de vérité.</li>
                                 <li><strong>Synchronisation en temps réel :</strong> Fini les copier-coller et les erreurs de saisie. Vos données circulent automatiquement et sans rupture entre vos logiciels.</li>
@@ -1102,9 +1132,9 @@
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                             <div class="benefit-number">04</div>
-                            <div class="benefit-title" style="margin-bottom: 0;">Plus de temps pour l'essentiel</div>
+                            <div class="benefit-title" style="margin-bottom: 0;" data-i18n="benefit04-title">Plus de temps pour l'essentiel</div>
                         </div>
-                        <div class="benefit-desc">
+                        <div class="benefit-desc" data-i18n="benefit04-desc">
                             <ul>
                                 <li><strong>La liberté d'innover :</strong> Développez de nouvelles idées et lancez des projets ambitieux, sans être freiné par les détails opérationnels.</li>
                                 <li><strong>Un temps précieux pour votre stratégie :</strong> Réduisez le temps consacré aux tâches chronophages et consacrez-vous davantage à la construction de l'avenir de votre activité, ainsi qu'à la prise de décisions éclairées.</li>
@@ -1117,17 +1147,17 @@
             </div>
 
             <div class="trust-section">
-                <p class="trust-label">Outils que nous connectons</p>
+                <p class="trust-label" data-i18n="trust-label">Outils que nous intégrons pour répondre à vos besoins</p>
                 <div class="tools-row">
-                    <span class="tool-badge"><span class="tool-dot" style="background: #34a853;"></span>Google Sheets</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #4285f4;"></span>Google Workspace</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #0078d4;"></span>Microsoft Workspace</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #000000;"></span>Notion</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #4a154b;"></span>Slack</span>
                     <span class="tool-badge"><span class="tool-dot" style="background: #21759b;"></span>WordPress</span>
                     <span class="tool-badge"><span class="tool-dot" style="background: #96bf48;"></span>Shopify</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #ff6a00;"></span>HubSpot</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #0078d4;"></span>Excel / OneDrive</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #4a154b;"></span>Slack</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #ea4335;"></span>Gmail</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #000000;"></span>Notion</span>
-                    <span class="tool-badge"><span class="tool-dot" style="background: #0079bf;"></span>Trello</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #0061ff;"></span>Dropbox</span>
+                    <span class="tool-badge"><span class="tool-dot" style="background: #635bff;"></span>Stripe</span>
+                    <span class="tool-badge" style="opacity: 0.6; font-style: italic;" data-i18n="trust-more">… et bien plus encore !</span>
                 </div>
             </div>
         </div>
@@ -1138,32 +1168,33 @@
     <section class="slide" aria-labelledby="slide4-heading" role="region">
         <div class="slide-content">
             <div class="center-content">
-                <h1 id="slide4-heading">
-                    Prêt à<br>
-                    <span class="gradient-text">automatiser ?</span>
+                <h1 id="slide4-heading" data-i18n="slide4-h1">
+                    Prêt à <span class="gradient-text">automatiser ?</span>
                 </h1>
 
-                <p class="subtitle">
-                    Prêt à automatiser et gagner du temps ?<br>
-                    Découvrez en 2 minutes quelles tâches automatiser en priorité pour booster votre productivité.<br>
-                    👉 Remplissez le formulaire et recevez une analyse personnalisée !
+                <p class="subtitle" data-i18n="slide4-subtitle">
+                    Découvrez quelles tâches automatiser en priorité et commencez à gagner du temps dès maintenant. En seulement 2 minutes, obtenez votre analyse de productivité personnalisée.<br><br>
+                    👉 Remplissez le formulaire et découvrez où l'automatisation peut avoir le plus grand impact pour vous !
                 </p>
 
                 <div class="cta-container">
                     <a
-                        href="form/"
+                        href="form/index.html"
                         class="form-button"
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="Remplir le formulaire d'automatisation (s'ouvre dans un nouvel onglet)">
+                        data-aria-fr="Remplir le formulaire d'automatisation (s'ouvre dans un nouvel onglet)"
+                        data-aria-en="Fill in the automation form (opens in a new tab)"
+                        aria-label="Remplir le formulaire d'automatisation (s'ouvre dans un nouvel onglet)"
+                        data-i18n="cta-button">
                         <span class="cta-icon" role="img" aria-label="Rocket">🚀</span>
                         <span>Remplir le formulaire</span>
                     </a>
-                    <p class="gratuit-title">Devis gratuit pour solopreneurs et TPE</p>
-                    <div class="gratuit-badge">
+                    <p class="gratuit-title" data-i18n="gratuit-title">Devis gratuit pour solopreneurs et TPE</p>
+                    <div class="gratuit-badge" data-i18n="gratuit-badge1">
                         <span>✓</span> Sans engagement – 100 % gratuit
                     </div>
-                    <div class="gratuit-badge">
+                    <div class="gratuit-badge" data-i18n="gratuit-badge2">
                         <span>✓</span> Analyse sur mesure sous 24-48h
                     </div>
                 </div>
@@ -1228,6 +1259,162 @@
             requestAnimationFrame(move);
         }
         move();
+    })();
+    </script>
+
+    <!-- ============================================
+         INTERNATIONALISATION (FR / EN)
+         ============================================ -->
+    <script>
+    (function () {
+        var translations = {
+            fr: {
+                'skip-link':             'Passer au contenu principal',
+                'slide1-h1':             '<span class="gradient-text">Automatisez votre business</span>',
+                'slide1-big-number':     'Gagnez 10 à 15',
+                'slide1-tagline':        'heures chaque semaine',
+                'slide2-h2':             'Vous perdez combien<br><span class="gradient-text">d\'heures chaque semaine ?</span>',
+                'slide2-subtitle':       '<strong>AUTOMATISEZ &amp; DÉVELOPPEZ-VOUS</strong><br>Des solutions simples. Plus de productivité.<br>Libérez du temps.',
+                'stat1-desc':            'des freelance, indépendant ou auto-entrepreneur perdent<br>10+ heures/semaine',
+                'stat2-desc':            'du temps perdu sur<br>des tâches manuelles',
+                'stat3-desc':            'de productivité perdue<br>sans automatisation',
+                'slide3-h2':             '<span class="gradient-text">À quoi vous attendre</span>',
+                'slide3-intro-tagline':  'Libérez votre temps et laissez l\'automatisation s\'occuper du reste !',
+                'slide3-intro-subtitle': '(Conçu pour les solopreneurs et les petites entreprises, quelle que soit leur taille.)',
+                'benefit01-title':       'Ventes &amp; Marketing',
+                'benefit01-desc':        '<ul><li><strong>Communication automatisée :</strong> Emails intelligents pour les confirmations de commande, les relances de paniers abandonnés, les campagnes promotionnelles ciblées et les réponses automatiques aux FAQ.</li><li><strong>Gestion commerciale et CRM :</strong> Suivi des leads avec scoring et qualification automatique, génération de devis et factures, et fidélisation avec historique client centralisé et rappels de paiement.</li><li><strong>Présence digitale :</strong> Planification et publication automatique sur les réseaux sociaux, analyse des performances et ajustement des contenus.</li><li><strong>Efficacité opérationnelle :</strong> Automatisation des tâches répétitives pour libérer du temps sur l\'innovation.</li></ul><div class="benefit-result">→ Résultat : Vos clients sont mieux suivis et engagés grâce à un système automatisé et personnalisé, tandis que vos ventes augmentent sans effort supplémentaire, vous permettant de vous concentrer sur l\'innovation et la croissance de vos projets.</div>',
+                'benefit02-title':       'Opérations fluides',
+                'benefit02-desc':        '<ul><li><strong>Un support client qui répond même quand vous êtes hors ligne :</strong> réponses automatiques, tickets, FAQ intelligentes.</li><li><strong>Une gestion financière claire et sans prise de tête :</strong> synchronisation des ventes, suivi des dépenses, reporting automatisé.</li><li><strong>Une organisation simple, même en solo ou en petite équipe :</strong> planning, paie, congés, tout au même endroit.</li></ul><div class="benefit-result">→ Résultat : votre business tourne tout seul, comme une horloge, sans stress ni oubli.</div>',
+                'benefit03-title':       'Intégration complète',
+                'benefit03-desc':        '<ul><li><strong>Tous vos outils connectés :</strong> Shopify, WordPress, Microsoft Excel (avec OneDrive/SharePoint), et bien plus — une seule plateforme, une seule source de vérité.</li><li><strong>Synchronisation en temps réel :</strong> Fini les copier-coller et les erreurs de saisie. Vos données circulent automatiquement et sans rupture entre vos logiciels.</li><li><strong>Workflow fluide de bout en bout :</strong> De la commande client au suivi financier, en passant par le marketing — tout est lié, tout est simple.</li></ul><div class="benefit-result">→ Résultat : Vos outils communiquent enfin entre eux, comme s\'ils parlaient le même langage. Vous gagnez en efficacité, supprimez les frictions techniques, et construisez un business agile et prêt à se développer sans limite.</div>',
+                'benefit04-title':       'Plus de temps pour l\'essentiel',
+                'benefit04-desc':        '<ul><li><strong>La liberté d\'innover :</strong> Développez de nouvelles idées et lancez des projets ambitieux, sans être freiné par les détails opérationnels.</li><li><strong>Un temps précieux pour votre stratégie :</strong> Réduisez le temps consacré aux tâches chronophages et consacrez-vous davantage à la construction de l\'avenir de votre activité, ainsi qu\'à la prise de décisions éclairées.</li><li><strong>Une sérénité retrouvée :</strong> Confiez les tâches répétitives à la technologie et concentrez-vous sur ce qui crée réellement de la valeur pour vos clients et votre entreprise.</li></ul><div class="benefit-result">→ Saisissez cette opportunité pour reprendre pleinement le contrôle de votre temps et donner un nouvel élan à votre activité, en éliminant les frictions inutiles du quotidien.</div>',
+                'trust-label':           'Outils que nous intégrons pour répondre à vos besoins',
+                'trust-more':            '… et bien plus encore !',
+                'slide4-h1':             'Prêt à <span class="gradient-text">automatiser ?</span>',
+                'slide4-subtitle':       'Découvrez quelles tâches automatiser en priorité et commencez à gagner du temps dès maintenant. En seulement 2 minutes, obtenez votre analyse de productivité personnalisée.<br><br>👉 Remplissez le formulaire et découvrez où l\'automatisation peut avoir le plus grand impact pour vous !',
+                'cta-button':            '<span class="cta-icon" role="img" aria-label="Rocket">🚀</span><span>Remplir le formulaire</span>',
+                'gratuit-title':         'Devis gratuit pour solopreneurs et TPE',
+                'gratuit-badge1':        '<span>✓</span> Sans engagement – 100 % gratuit',
+                'gratuit-badge2':        '<span>✓</span> Analyse sur mesure sous 24-48h'
+            },
+            en: {
+                'skip-link':             'Skip to main content',
+                'slide1-h1':             '<span class="gradient-text">Automate Your Business</span>',
+                'slide1-big-number':     'Save 10 to 15',
+                'slide1-tagline':        'hours every week',
+                'slide2-h2':             'How many hours are you<br><span class="gradient-text">losing each week?</span>',
+                'slide2-subtitle':       '<strong>AUTOMATE &amp; GROW</strong><br>Simple solutions. Greater productivity.<br>Free up your time.',
+                'stat1-desc':            'of freelancers, sole traders and self-employed<br>lose 10+ hours/week',
+                'stat2-desc':            'of time lost on<br>manual tasks',
+                'stat3-desc':            'productivity lost<br>without automation',
+                'slide3-h2':             '<span class="gradient-text">What to Expect</span>',
+                'slide3-intro-tagline':  'Automate your tasks, free up your time!',
+                'slide3-intro-subtitle': '(Designed for solopreneurs and small businesses, whatever your size.)',
+                'benefit01-title':       'Sales &amp; Marketing',
+                'benefit01-desc':        '<p style="margin:0 0 0.6em">Your emails don\'t stop when you do. Confirmations, basket nudges, promos, FAQ replies — they go out automatically.</p><p style="margin:0 0 0.6em">New leads get scored as they come in. Quotes and invoices don\'t pile up waiting for you. When a client calls, their history is already there.</p><p style="margin:0 0 0.6em">Social media runs on a schedule you set once. Check what worked, post more of that.</p><div class="benefit-result">→ Result: more clients reached, more deals moving, no extra time spent on it.</div>',
+                'benefit02-title':       'Smooth Operations',
+                'benefit02-desc':        '<p style="margin:0 0 0.6em">Your business runs quietly in the background.</p><p style="margin:0 0 0.6em">Client questions receive quick auto-replies, finances stay organised automatically, and reports appear when you need them. Scheduling and admin tasks are all managed in one simple place.</p><div class="benefit-result">→ Result: fewer interruptions, fewer loose ends, and a calmer, more organised business every day.</div>',
+                'benefit03-title':       'Full Integration',
+                'benefit03-desc':        '<p style="margin:0 0 0.6em">Your tools work together like one smooth system.</p><p style="margin:0 0 0.6em">Shopify, WordPress, Excel, OneDrive — everything connects so data flows automatically. Orders, client info, and finances stay perfectly in sync.</p><p style="margin:0 0 0.6em">No more switching between apps or fixing spreadsheets. Changes update everywhere in real time.</p><div class="benefit-result">→ Result: one reliable flow of information, with no mistakes and almost zero manual work.</div>',
+                'benefit04-title':       'More Time for What Matters',
+                'benefit04-desc':        '<p style="margin:0 0 0.6em">The tasks that quietly consume your week — copying data, chasing invoices, handling repetitive admin — are the first to disappear.</p><p style="margin:0 0 0.6em">Once these processes run automatically, your time opens up for the work that actually moves your business forward: the ideas you\'ve been meaning to explore, the projects that have been waiting in the background, and the conversations that create real opportunities.</p><p style="margin:0 0 0.6em">Instead of spending hours on routine operations, you can focus on strategy, decision-making, and the direction you want your business to take.</p><div class="benefit-result">→ Result: almost zero manual work, clearer priorities, and the freedom to spend your time on what matters most — creating value for your clients and doing the work you actually enjoy.</div>',
+                'trust-label':           'Tools We Integrate With',
+                'trust-more':            'and many more…',
+                'slide4-h1':             'Ready to <span class="gradient-text">Automate?</span>',
+                'slide4-subtitle':       'Discover which tasks to automate first — and start saving time today. It only takes 2 minutes to get your personalised productivity analysis.<br><br>👉 Fill out the form and see where automation can make the biggest impact!',
+                'cta-button':            '<span class="cta-icon" role="img" aria-label="Rocket">🚀</span><span>Fill in the Form</span>',
+                'gratuit-title':         'Free quote for solopreneurs and small businesses',
+                'gratuit-badge1':        '<span>✓</span> No commitment – 100% free',
+                'gratuit-badge2':        '<span>✓</span> Bespoke analysis within 24–48 hours'
+            }
+        };
+
+        window.currentLang = 'fr';
+
+        function applyLang(lang) {
+            var t = translations[lang];
+            if (!t) return;
+
+            // Update text/HTML of all [data-i18n] elements
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    el.innerHTML = t[key];
+                }
+            });
+
+            // Update img src, alt, dimensions and container aspect-ratio
+            document.querySelectorAll('[data-src-fr]').forEach(function (img) {
+                img.setAttribute('src', lang === 'fr' ? img.getAttribute('data-src-fr') : img.getAttribute('data-src-en'));
+                var w = img.getAttribute(lang === 'fr' ? 'data-width-fr'  : 'data-width-en');
+                var h = img.getAttribute(lang === 'fr' ? 'data-height-fr' : 'data-height-en');
+                if (w && h) {
+                    img.setAttribute('width',  w);
+                    img.setAttribute('height', h);
+                    var container = img.closest('.image-header');
+                    if (container) container.style.aspectRatio = w + ' / ' + h;
+                }
+            });
+            document.querySelectorAll('[data-alt-fr]').forEach(function (img) {
+                img.setAttribute('alt', lang === 'fr' ? img.getAttribute('data-alt-fr') : img.getAttribute('data-alt-en'));
+            });
+
+            // Update aria-label on CTA button
+            document.querySelectorAll('[data-aria-fr]').forEach(function (el) {
+                el.setAttribute('aria-label', lang === 'fr' ? el.getAttribute('data-aria-fr') : el.getAttribute('data-aria-en'));
+            });
+
+            // Update <html lang>
+            document.documentElement.setAttribute('lang', lang);
+
+            // Update page title and meta description
+            if (lang === 'en') {
+                document.title = 'Automate Your Business – Full Pitch';
+                var metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) metaDesc.setAttribute('content', 'Automate your business with AI. Save 10 to 15 hours every week by automating your sales, marketing and operations.');
+            } else {
+                document.title = 'Automatisez Votre Business - Pitch Complet';
+                var metaDescFr = document.querySelector('meta[name="description"]');
+                if (metaDescFr) metaDescFr.setAttribute('content', 'Automatisez votre business avec l\'IA. Gagnez 10 à 15 heures chaque semaine en automatisant vos ventes, marketing et opérations.');
+            }
+
+            // Toggle button active states
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-fr').setAttribute('aria-pressed', lang === 'fr' ? 'true' : 'false');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-en').setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+
+            window.currentLang = lang;
+        }
+
+        window.setLang = function (lang) {
+            applyLang(lang);
+            try { localStorage.setItem('preferred-lang', lang); } catch (e) {}
+            // Reflect language in URL for shareability and SEO crawlers
+            try {
+                var url = new URL(window.location.href);
+                if (lang === 'fr') { url.searchParams.delete('lang'); }
+                else { url.searchParams.set('lang', lang); }
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+        };
+
+        // Priority: URL param > localStorage > default FR
+        (function () {
+            var urlLang = null;
+            try { urlLang = new URLSearchParams(window.location.search).get('lang'); } catch (e) {}
+            var savedLang = null;
+            try { savedLang = localStorage.getItem('preferred-lang'); } catch (e) {}
+            var init = (urlLang && translations[urlLang]) ? urlLang
+                     : (savedLang && translations[savedLang]) ? savedLang
+                     : 'fr';
+            if (init !== 'fr') applyLang(init);
+        }());
+
+        // Attach click handlers without inline onclick (CSP-friendly)
+        document.getElementById('btn-fr').addEventListener('click', function () { window.setLang('fr'); });
+        document.getElementById('btn-en').addEventListener('click', function () { window.setLang('en'); });
     })();
     </script>
 </body>
