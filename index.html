@@ -727,10 +727,10 @@
 <body>
     <!-- Language toggle -->
     <nav class="lang-toggle" aria-label="Language selector">
-        <button class="lang-btn active" id="btn-fr" aria-pressed="true" lang="fr">
+        <button class="lang-btn" id="btn-fr" aria-pressed="false" lang="fr">
             <span class="flag" aria-hidden="true">🇫🇷</span> FR
         </button>
-        <button class="lang-btn" id="btn-en" aria-pressed="false" lang="en">
+        <button class="lang-btn active" id="btn-en" aria-pressed="true" lang="en">
             <span class="flag" aria-hidden="true">🇬🇧</span> EN
         </button>
     </nav>
@@ -1158,7 +1158,7 @@
             } catch (e) {}
         };
 
-        // Priority: URL param > localStorage > default FR
+        // Priority: URL param > localStorage > default EN
         (function () {
             var urlLang = null;
             try { urlLang = new URLSearchParams(window.location.search).get('lang'); } catch (e) {}
@@ -1166,8 +1166,8 @@
             try { savedLang = localStorage.getItem('preferred-lang'); } catch (e) {}
             var init = (urlLang && translations[urlLang]) ? urlLang
                      : (savedLang && translations[savedLang]) ? savedLang
-                     : 'fr';
-            if (init !== 'fr') applyLang(init);
+                     : 'en';
+            if (init !== 'en') applyLang(init);
         }());
 
         // Attach click handlers without inline onclick (CSP-friendly)
