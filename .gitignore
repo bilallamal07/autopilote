@@ -27,6 +27,10 @@ google-apps-script-CONFIGURED.js
 # Pre-production / draft files
 Pre-Prod/
 
+# Local project folders (not part of the site)
+docs/
+video/
+
 # Playwright MCP config
 .playwright-mcp/
 
@@ -35,9 +39,12 @@ lead form
 
 # Screenshots from testing
 *.png
+*.jpg
 !qr-code-pitch.png
 !qr-code-pitch-blue.png
 !automatisez.png
+!automatisez_refined_v2_1.jpg
+!refined_automatizer_1.jpg
 
 # System files
 .DS_Store
