@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <title>Automatisez votre tâche répétitive</title>
+    <meta name="description" content="Dites-nous quelle tâche vous prend le plus de temps — recevez une analyse personnalisée sous 24h.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lang-toggle.css">
+    <link rel="alternate" hreflang="fr" href="./index-form.html">
+    <link rel="alternate" hreflang="en-GB" href="./index-form.html?lang=en">
+
+    <style>
+        :root {
+            --primary: #a855f7;
+            --primary-dark: #06b6d4;
+            --secondary: #06b6d4;
+            --text-main: #f1f5f9;
+            --text-light: #94a3b8;
+            --white: #ffffff;
+            --glass-bg: rgba(15, 23, 42, 0.88);
+            --glass-border: rgba(168, 85, 247, 0.25);
+            --input-bg: rgba(30, 27, 75, 0.55);
+        }
+
+        .skip-link { position: absolute; top: -40px; left: 0; background: #06b6d4; color: white; padding: 8px 16px; text-decoration: none; z-index: 10000; font-weight: 600; }
+        .skip-link:focus { top: 0; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #07070d;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 40px;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Dark nebula background (fixed) */
+        #bg-gradient-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; background: #07070d; overflow: hidden;
+        }
+        #nebula-glow {
+            position: absolute; width: 160%; height: 80%; left: -30%; top: 20%;
+            background: radial-gradient(ellipse at 50% 55%, rgba(130,40,210,0.62) 0%, rgba(100,30,180,0.40) 25%, rgba(70,20,140,0.18) 50%, transparent 68%);
+            filter: blur(55px);
+            animation: nebula-breathe 9s ease-in-out infinite;
+            will-change: transform, opacity;
+            pointer-events: none;
+        }
+        #g-interactive {
+            position: absolute; width: 500px; height: 500px; border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(168,85,247,0.10) 0%, transparent 70%);
+            transform: translate(-50%, -50%); pointer-events: none;
+        }
+        .aurora-star {
+            position: absolute; border-radius: 50%;
+            animation: star-twinkle ease-in-out infinite;
+        }
+        @keyframes nebula-breathe { 0%, 100% { opacity: 0.80; transform: scale(1); } 50% { opacity: 1.00; transform: scale(1.06); } }
+        @keyframes star-twinkle { 0%, 100% { opacity: 0; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* ── Page-load stagger ── */
+        /* Container already uses slideUp (0.8s). Everything inside staggers after. */
+        .header                   { animation: fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) 0.30s both; }
+        .form-group               { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both; }
+        .form-group:nth-child(1)  { animation-delay: 0.48s; }
+        .form-group:nth-child(2)  { animation-delay: 0.53s; }
+        .form-group:nth-child(3)  { animation-delay: 0.58s; }
+        .form-group:nth-child(4)  { animation-delay: 0.63s; }
+        .form-group:nth-child(5)  { animation-delay: 0.68s; }
+        .form-group:nth-child(6)  { animation-delay: 0.73s; }
+        .form-group:nth-child(7)  { animation-delay: 0.78s; }
+        .form-group:nth-child(8)  { animation-delay: 0.83s; }
+        .form-group:nth-child(9)  { animation-delay: 0.88s; }
+        .form-group:nth-child(10) { animation-delay: 0.93s; }
+        .gdpr-group               { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) 0.96s both; }
+        .post-submit-info         { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) 1.00s both; }
+        .submit-btn               { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) 1.04s both; }
+        .note                     { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) 1.08s both; }
+
+        /* Respect user motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .container, .header, .form-group, .gdpr-group,
+            .post-submit-info, .submit-btn, .note,
+            .message-box, .icon-circle {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 16px 48px rgba(168,85,247,0.22), 0 4px 16px rgba(0,0,0,0.15);
+            max-width: 550px;
+            width: 100%;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+        }
+
+        /* Top decoration bar */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #a855f7 0%, #06b6d4 100%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .description {
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .description strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .required {
+            color: var(--secondary);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            transition: color 0.3s;
+            pointer-events: none;
+        }
+
+        .textarea-icon {
+            top: 16px;
+            transform: none;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            background: var(--input-bg);
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-main);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: none;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            background: rgba(30, 27, 75, 0.8);
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.18);
+        }
+
+        input:focus + .input-icon,
+        textarea:focus + .input-icon,
+        select:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        .optional-tag {
+            font-weight: 400;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .gdpr-group {
+            margin-bottom: 24px;
+        }
+
+        .gdpr-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.4;
+            margin-left: 0;
+            text-align: left;
+        }
+
+        .gdpr-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            margin-top: 1px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .gdpr-note {
+            display: block;
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .post-submit-info {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+
+        .post-submit-info .tagline {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .post-submit-info .details {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(168, 85, 247, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:focus-visible {
+            outline: 3px solid #06b6d4;
+            outline-offset: 2px;
+        }
+
+        /* Loading Spinner */
+        .submit-btn.loading {
+            color: transparent;
+            pointer-events: none;
+        }
+
+        .submit-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            top: 50%;
+            left: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spinner 0.8s linear infinite;
+        }
+
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to   { opacity: 1; transform: none; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.6); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .note {
+            background: rgba(30, 27, 75, 0.55);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 32px;
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .note-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .note strong { color: #e2e8f0; }
+
+        /* Keep native select dropdowns readable */
+        select option { background: #1e1b4b; color: #f1f5f9; }
+
+        /* Success & Error Messages */
+        .message-box {
+            display: none;
+            padding: 32px;
+            text-align: center;
+            animation: slideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .message-box.show {
+            display: block;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+            animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+        }
+
+        .success-bg { background: rgba(22, 163, 74, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+        .error-bg   { background: rgba(220, 38, 38, 0.15);  color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+        .message-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .message-text {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .retry-btn {
+            background: rgba(30, 27, 75, 0.6);
+            color: var(--text-main);
+            border: 2px solid rgba(168, 85, 247, 0.35);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .retry-btn:hover {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .retry-btn:focus-visible {
+            outline: 3px solid #a855f7;
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 32px 24px;
+            }
+            h1 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Language toggle -->
+    <nav class="lang-toggle" aria-label="Language selector">
+        <button class="lang-btn active" id="btn-fr" aria-pressed="true" lang="fr">
+            <span class="flag" aria-hidden="true">🇫🇷</span> FR
+        </button>
+        <button class="lang-btn" id="btn-en" aria-pressed="false" lang="en">
+            <span class="flag" aria-hidden="true">🇬🇧</span> EN
+        </button>
+    </nav>
+
+    <a href="#main-content" class="skip-link" data-i18n="skip-link">Passer au contenu principal</a>
+
+    <!-- Dark nebula background (fixed, full page) -->
+    <div id="bg-gradient-container" aria-hidden="true">
+        <div id="nebula-glow"></div>
+        <div id="g-interactive"></div>
+    </div>
+
+    <main id="main-content">
+    <div class="container">
+        <div class="header">
+            <h1 data-i18n="form-h1">Automatisez votre<br>tâche répétitive</h1>
+            <p class="description" data-i18n="form-desc">
+                Quelle tâche vous mange le plus de temps ?<br>
+                <strong>On l'automatise dès cette semaine.</strong>
+            </p>
+        </div>
+
+        <form id="automationForm">
+            <div class="form-group">
+                <label for="nom" data-i18n="label-nom">Nom complet <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <input type="text" id="nom" name="nom" placeholder="Jean Dupont" required>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" data-i18n="label-email">Adresse email <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" placeholder="jean@entreprise.com" required>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telephone" data-i18n="label-telephone">Numéro de téléphone <span class="optional-tag">(optionnel)</span></label>
+                <div class="input-wrapper">
+                    <input type="tel" id="telephone" name="telephone" placeholder="+33 6 12 34 56 78">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="entreprise" data-i18n="label-entreprise">Nom de l'entreprise <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <input type="text" id="entreprise" name="entreprise" placeholder="Ex: Studio Dupont, Ma Boutique..." required>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="secteur" data-i18n="label-secteur">Secteur d'activité <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <select id="secteur" name="secteur" required>
+                        <option value="" disabled selected>Sélectionnez votre secteur</option>
+                        <option value="Agriculture / Agroalimentaire">Agriculture / Agroalimentaire</option>
+                        <option value="Art / Culture / Design">Art / Culture / Design</option>
+                        <option value="Artisanat / BTP">Artisanat / BTP</option>
+                        <option value="Banques / Assurances / Finance">Banques / Assurances / Finance</option>
+                        <option value="Commerce / Distribution / E-commerce">Commerce / Distribution / E-commerce</option>
+                        <option value="Communication / Marketing / Publicité">Communication / Marketing / Publicité</option>
+                        <option value="Éducation / Formation">Éducation / Formation</option>
+                        <option value="Énergie / Environnement">Énergie / Environnement</option>
+                        <option value="Hôtellerie / Restauration / Tourisme">Hôtellerie / Restauration / Tourisme</option>
+                        <option value="Immobilier">Immobilier</option>
+                        <option value="Industrie / Fabrication">Industrie / Fabrication</option>
+                        <option value="Informatique / Tech / SAAS">Informatique / Tech / SAAS</option>
+                        <option value="Juridique / Conseil">Juridique / Conseil</option>
+                        <option value="Logistique / Transport">Logistique / Transport</option>
+                        <option value="Médical / Santé / Pharmacie">Médical / Santé / Pharmacie</option>
+                        <option value="Médias / Audiovisuel">Médias / Audiovisuel</option>
+                        <option value="ONG / Associatif">ONG / Associatif</option>
+                        <option value="Ressources Humaines / Recrutement">Ressources Humaines / Recrutement</option>
+                        <option value="Services à la personne">Services à la personne</option>
+                        <option value="Sport / Loisirs">Sport / Loisirs</option>
+                        <option value="Télécommunications">Télécommunications</option>
+                        <option value="Autre">Autre (précisez)</option>
+                    </select>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                </div>
+            </div>
+
+            <div class="form-group" id="secteurAutreGroup" style="display: none;">
+                <label for="secteurAutre" data-i18n="label-secteurAutre">Précisez votre secteur <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <input type="text" id="secteurAutre" name="secteurAutre" placeholder="Ex: Coaching sportif, Consulting IT...">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tache" data-i18n="label-tache">Quelle tâche vous ralentit ? <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <textarea id="tache" name="tache" placeholder="Ex: Je passe 5h par semaine à copier-coller des données depuis mes emails vers Excel..." required></textarea>
+                    <svg class="input-icon textarea-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="temps" data-i18n="label-temps">Temps passé par semaine <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <select id="temps" name="temps" required>
+                        <option value="" disabled selected>Sélectionnez une estimation</option>
+                        <option value="Moins de 2h">Moins de 2h</option>
+                        <option value="2h à 5h">2h à 5h</option>
+                        <option value="5h à 10h">5h à 10h</option>
+                        <option value="Plus de 10h">Plus de 10h</option>
+                    </select>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="outils" data-i18n="label-outils">Outils utilisés actuellement <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <select id="outils" name="outils" required>
+                        <option value="" disabled selected>Sélectionnez vos outils</option>
+                        <option value="Google Sheets / Excel">Google Sheets / Excel</option>
+                        <option value="Notion">Notion</option>
+                        <option value="CRM (HubSpot, Salesforce, Pipedrive...)">CRM (HubSpot, Salesforce, Pipedrive...)</option>
+                        <option value="Email (Gmail, Outlook...)">Email (Gmail, Outlook...)</option>
+                        <option value="Slack / Teams">Slack / Teams</option>
+                        <option value="Trello / Asana / Monday">Trello / Asana / Monday</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="budget" data-i18n="label-budget">Budget estimé <span class="optional-tag">(optionnel)</span></label>
+                <div class="input-wrapper">
+                    <select id="budget" name="budget">
+                        <option value="" disabled selected>Sélectionnez une fourchette</option>
+                        <option value="< 50€">&lt; 50&euro;</option>
+                        <option value="50€ – 100€">50&euro; &ndash; 100&euro;</option>
+                        <option value="100€ – 500€">100&euro; &ndash; 500&euro;</option>
+                        <option value="500€ – 1000€">500&euro; &ndash; 1000&euro;</option>
+                        <option value="1000€+">1000&euro;+</option>
+                        <option value="Je ne sais pas encore">Je ne sais pas encore</option>
+                    </select>
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+            </div>
+
+            <div class="gdpr-group">
+                <label class="gdpr-label">
+                    <input type="checkbox" id="gdpr" name="gdpr" required>
+                    <span data-i18n="gdpr-consent">
+                        J'accepte que mes données soient traitées pour me recontacter et recevoir mon analyse personnalisée.
+                        <span class="gdpr-note">Nous collectons uniquement les données nécessaires au traitement de votre demande via notre formulaire de contact — Conforme RGPD.</span>
+                    </span>
+                </label>
+            </div>
+
+            <div class="post-submit-info">
+                <p class="tagline" data-i18n="form-tagline">Des workflows simplifiés, sans prise de tête.</p>
+                <p class="details" data-i18n="form-details">Soumettez votre demande en 2 minutes, et recevez une analyse personnalisée sous 24 à 48h — avec des pistes concrètes pour automatiser vos tâches.</p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn" data-i18n="submit-btn">
+                Lancer l'automatisation 🚀
+            </button>
+
+            <div class="note">
+                <div class="note-icon">👉</div>
+                <div data-i18n="form-note">
+                    <strong>100% Gratuit & Concret</strong><br>
+                    On vous montre exactement quoi automatiser.<br>
+                    Zéro jargon technique.
+                </div>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="message-box">
+            <div class="icon-circle success-bg">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 class="message-title" data-i18n="success-title">Demande reçue !</h3>
+            <p class="message-text" data-i18n="success-text">
+                Merci. Nous analysons votre besoin et nous vous contacterons dans les 24h avec une solution concrète.
+            </p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="message-box">
+            <div class="icon-circle error-bg">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+            <h3 class="message-title" data-i18n="error-title">Oups...</h3>
+            <p class="message-text">
+                <span data-i18n="error-text-label">Une erreur est survenue lors de l'envoi.</span><br>
+                <span id="errorText" style="font-size: 0.9em; opacity: 0.8;"></span>
+            </p>
+            <button class="retry-btn" onclick="resetForm()" data-i18n="retry-btn">Réessayer</button>
+        </div>
+    </div>
+
+    <!-- Stars + mouse-following glow -->
+    <script>
+    (function () {
+        var starColors = ['#00e5cc','#a855f7','#7c3aed','#ffffff'];
+        var colorWeights = [3, 2, 1, 3];
+        var colorPool = [];
+        starColors.forEach(function (c, i) { for (var w = 0; w < colorWeights[i]; w++) colorPool.push(c); });
+        var bgContainer = document.getElementById('bg-gradient-container');
+        function buildStars() {
+            if (!bgContainer) return;
+            var frag = document.createDocumentFragment();
+            for (var s = 0; s < 50; s++) {
+                var star = document.createElement('div');
+                star.className = 'aurora-star';
+                var size = Math.random() < 0.15 ? 3 : Math.random() < 0.4 ? 2 : 1;
+                var starColor = colorPool[Math.floor(Math.random() * colorPool.length)];
+                star.style.width  = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left   = (Math.random() * 100) + 'vw';
+                star.style.top    = (Math.random() * 100) + 'vh';
+                star.style.background = starColor;
+                if (size === 3) star.style.boxShadow = '0 0 4px 1px ' + starColor;
+                star.style.animationDuration = (Math.random() * 4 + 2).toFixed(2) + 's';
+                star.style.animationDelay    = (Math.random() * 7).toFixed(2) + 's';
+                frag.appendChild(star);
+            }
+            bgContainer.appendChild(frag);
+        }
+        if ('requestIdleCallback' in window) { requestIdleCallback(buildStars); }
+        else { setTimeout(buildStars, 200); }
+        var el = document.getElementById('g-interactive');
+        if (!el) return;
+        var curX = window.innerWidth / 2, curY = window.innerHeight / 2;
+        var tgX = curX, tgY = curY;
+        document.addEventListener('mousemove', function (e) { tgX = e.clientX; tgY = e.clientY; });
+        function move() {
+            curX += (tgX - curX) / 20; curY += (tgY - curY) / 20;
+            el.style.left = Math.round(curX) + 'px'; el.style.top = Math.round(curY) + 'px';
+            requestAnimationFrame(move);
+        }
+        move();
+    })();
+    </script>
+
+    <script>
+        // ====== CONFIGURATION ======
+        // URL Google Apps Script Web App (CONFIGURÉ)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCW1ZYLraQ4NRV2zTgSQc8uIi8_6wGnqfzoRgk56R1RfBxY2S9cUjpmFRu8ciIIS6LJQ/exec";
+        // ====== FIN CONFIGURATION ======
+
+        const form = document.getElementById('automationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+
+        // Show/hide "Autre" text field based on secteur selection
+        const secteurSelect = document.getElementById('secteur');
+        const secteurAutreGroup = document.getElementById('secteurAutreGroup');
+        const secteurAutreInput = document.getElementById('secteurAutre');
+
+        secteurSelect.addEventListener('change', function() {
+            if (this.value === 'Autre') {
+                secteurAutreGroup.style.display = 'block';
+                secteurAutreInput.required = true;
+            } else {
+                secteurAutreGroup.style.display = 'none';
+                secteurAutreInput.required = false;
+                secteurAutreInput.value = '';
+            }
+        });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validation de l'URL du script
+            if (GOOGLE_SCRIPT_URL === "VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI") {
+                showError("Configuration manquante : URL Google Apps Script non configurée.");
+                return;
+            }
+
+            // Collecter les données
+            const secteurValue = secteurSelect.value === 'Autre'
+                ? secteurAutreInput.value.trim()
+                : secteurSelect.value;
+
+            const formData = {
+                nom: document.getElementById('nom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telephone: document.getElementById('telephone').value.trim(),
+                entreprise: document.getElementById('entreprise').value.trim(),
+                secteur: secteurValue,
+                tache: document.getElementById('tache').value.trim(),
+                temps: document.getElementById('temps').value,
+                outils: document.getElementById('outils').value,
+                budget: document.getElementById('budget').value || '',
+                gdpr: document.getElementById('gdpr').checked,
+                lang: window.currentLang || 'fr'
+            };
+
+            // Désactiver le formulaire pendant l'envoi
+            setFormLoading(true);
+
+            try {
+                // Envoyer les données à Google Apps Script
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important pour Google Apps Script
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // Avec mode 'no-cors', on ne peut pas lire la réponse
+                // On suppose que ça a fonctionné si pas d'erreur réseau
+                setTimeout(showSuccess, 1000); // Petit délai pour l'UX
+
+            } catch (error) {
+                showError("Problème de connexion. Vérifiez votre internet.");
+            } finally {
+                // setFormLoading(false) est appelé par showSuccess ou showError si besoin
+                if (!successMessage.classList.contains('show')) {
+                    setFormLoading(false);
+                }
+            }
+        });
+
+        function setFormLoading(loading) {
+            const inputs = form.querySelectorAll('input, textarea, select, button');
+            inputs.forEach(input => input.disabled = loading);
+
+            if (loading) {
+                submitBtn.classList.add('loading');
+                submitBtn.innerHTML = '';
+            } else {
+                submitBtn.classList.remove('loading');
+                submitBtn.innerHTML = window.currentLang === 'en' ? 'Start Automating 🚀' : "Lancer l'automatisation 🚀";
+            }
+        }
+
+        function showSuccess() {
+            form.style.display = 'none';
+            errorMessage.classList.remove('show');
+            successMessage.classList.add('show');
+            document.querySelector('.header').style.display = 'none';
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            form.style.display = 'none';
+            successMessage.classList.remove('show');
+            errorMessage.classList.add('show');
+        }
+
+        function resetForm() {
+            errorMessage.classList.remove('show');
+            form.style.display = 'block';
+            setFormLoading(false);
+        }
+    </script>
+
+    <!-- ============================================
+         INTERNATIONALISATION (FR / EN)
+         ============================================ -->
+    <script>
+    (function () {
+        window.currentLang = 'fr';
+
+        var translations = {
+            fr: {
+                'form-h1':           'Automatisez votre<br>tâche répétitive',
+                'form-desc':         'Quelle tâche vous mange le plus de temps ?<br><strong>On l\'automatise dès cette semaine.</strong>',
+                'label-nom':         'Nom complet <span class="required">*</span>',
+                'label-email':       'Adresse email <span class="required">*</span>',
+                'label-telephone':   'Numéro de téléphone <span class="optional-tag">(optionnel)</span>',
+                'label-entreprise':  'Nom de l\'entreprise <span class="required">*</span>',
+                'label-secteur':     'Secteur d\'activité <span class="required">*</span>',
+                'label-secteurAutre':'Précisez votre secteur <span class="required">*</span>',
+                'label-tache':       'Quelle tâche vous ralentit ? <span class="required">*</span>',
+                'label-temps':       'Temps passé par semaine <span class="required">*</span>',
+                'label-outils':      'Outils utilisés actuellement <span class="required">*</span>',
+                'label-budget':      'Budget estimé <span class="optional-tag">(optionnel)</span>',
+                'gdpr-consent':      'J\'accepte que mes données soient traitées pour me recontacter et recevoir mon analyse personnalisée. <span class="gdpr-note">Nous collectons uniquement les données nécessaires au traitement de votre demande via notre formulaire de contact — Conforme RGPD.</span>',
+                'form-tagline':      'Des workflows simplifiés, sans prise de tête.',
+                'form-details':      'Soumettez votre demande en 2 minutes, et recevez une analyse personnalisée sous 24 à 48h — avec des pistes concrètes pour automatiser vos tâches.',
+                'submit-btn':        'Lancer l\'automatisation 🚀',
+                'form-note':         '<strong>100% Gratuit &amp; Concret</strong><br>On vous montre exactement quoi automatiser.<br>Zéro jargon technique.',
+                'success-title':     'Demande reçue !',
+                'success-text':      'Merci. Nous analysons votre besoin et nous vous contacterons dans les 24h avec une solution concrète.',
+                'error-title':       'Oups...',
+                'error-text-label':  'Une erreur est survenue lors de l\'envoi.',
+                'retry-btn':         'Réessayer',
+                'placeholders': {
+                    'nom':         'Jean Dupont',
+                    'email':       'jean@entreprise.com',
+                    'telephone':   '+33 6 12 34 56 78',
+                    'entreprise':  'Ex: Studio Dupont, Ma Boutique...',
+                    'secteurAutre':'Ex: Coaching sportif, Consulting IT...',
+                    'tache':       'Ex: Je passe 5h par semaine à copier-coller des données depuis mes emails vers Excel...'
+                },
+                'select-options': {
+                    'secteur': {
+                        '':                                          'Sélectionnez votre secteur',
+                        'Agriculture / Agroalimentaire':             'Agriculture / Agroalimentaire',
+                        'Art / Culture / Design':                    'Art / Culture / Design',
+                        'Artisanat / BTP':                          'Artisanat / BTP',
+                        'Banques / Assurances / Finance':            'Banques / Assurances / Finance',
+                        'Commerce / Distribution / E-commerce':      'Commerce / Distribution / E-commerce',
+                        'Communication / Marketing / Publicité':     'Communication / Marketing / Publicité',
+                        'Éducation / Formation':                     'Éducation / Formation',
+                        'Énergie / Environnement':                   'Énergie / Environnement',
+                        'Hôtellerie / Restauration / Tourisme':      'Hôtellerie / Restauration / Tourisme',
+                        'Immobilier':                                'Immobilier',
+                        'Industrie / Fabrication':                   'Industrie / Fabrication',
+                        'Informatique / Tech / SAAS':                'Informatique / Tech / SAAS',
+                        'Juridique / Conseil':                       'Juridique / Conseil',
+                        'Logistique / Transport':                    'Logistique / Transport',
+                        'Médical / Santé / Pharmacie':               'Médical / Santé / Pharmacie',
+                        'Médias / Audiovisuel':                      'Médias / Audiovisuel',
+                        'ONG / Associatif':                          'ONG / Associatif',
+                        'Ressources Humaines / Recrutement':         'Ressources Humaines / Recrutement',
+                        'Services à la personne':                    'Services à la personne',
+                        'Sport / Loisirs':                           'Sport / Loisirs',
+                        'Télécommunications':                        'Télécommunications',
+                        'Autre':                                     'Autre (précisez)'
+                    },
+                    'temps': {
+                        '':              'Sélectionnez une estimation',
+                        'Moins de 2h':   'Moins de 2h',
+                        '2h à 5h':       '2h à 5h',
+                        '5h à 10h':      '5h à 10h',
+                        'Plus de 10h':   'Plus de 10h'
+                    },
+                    'outils': {
+                        '':                                        'Sélectionnez vos outils',
+                        'Google Sheets / Excel':                   'Google Sheets / Excel',
+                        'Notion':                                  'Notion',
+                        'CRM (HubSpot, Salesforce, Pipedrive...)': 'CRM (HubSpot, Salesforce, Pipedrive...)',
+                        'Email (Gmail, Outlook...)':               'Email (Gmail, Outlook...)',
+                        'Slack / Teams':                           'Slack / Teams',
+                        'Trello / Asana / Monday':                 'Trello / Asana / Monday',
+                        'Autre':                                   'Autre'
+                    },
+                    'budget': {
+                        '':                    'Sélectionnez une fourchette',
+                        '< 50€':               '< 50\u20ac',
+                        '50€ – 100€':          '50\u20ac \u2013 100\u20ac',
+                        '100€ – 500€':         '100\u20ac \u2013 500\u20ac',
+                        '500€ – 1000€':        '500\u20ac \u2013 1\u202f000\u20ac',
+                        '1000€+':              '1\u202f000\u20ac+',
+                        'Je ne sais pas encore':'Je ne sais pas encore'
+                    }
+                }
+            },
+            en: {
+                'form-h1':           'Automate Your<br>Repetitive Task',
+                'form-desc':         'Which task is eating up most of your time?<br><strong>We\'ll automate it this very week.</strong>',
+                'label-nom':         'Full name <span class="required">*</span>',
+                'label-email':       'Email address <span class="required">*</span>',
+                'label-telephone':   'Phone number <span class="optional-tag">(optional)</span>',
+                'label-entreprise':  'Company name <span class="required">*</span>',
+                'label-secteur':     'Industry / Sector <span class="required">*</span>',
+                'label-secteurAutre':'Please specify your sector <span class="required">*</span>',
+                'label-tache':       'Which task is slowing you down? <span class="required">*</span>',
+                'label-temps':       'Time spent per week <span class="required">*</span>',
+                'label-outils':      'Tools currently used <span class="required">*</span>',
+                'label-budget':      'Estimated budget <span class="optional-tag">(optional)</span>',
+                'gdpr-consent':      'I consent to my personal data being processed in order to be contacted and to receive my personalised analysis. <span class="gdpr-note">We only collect data necessary for processing your request via our contact form — GDPR compliant.</span>',
+                'form-tagline':      'Simplified workflows, without the headache.',
+                'form-details':      'Submit your request in 2 minutes and receive a personalised analysis within 24–48 hours — with concrete steps to automate your tasks.',
+                'submit-btn':        'Start Automating 🚀',
+                'form-note':         '<strong>100% Free &amp; Practical</strong><br>We show you exactly what to automate.<br>Zero technical jargon.',
+                'success-title':     'Request received!',
+                'success-text':      'Thank you. We\'re analysing your requirements and will be in touch within 24 hours with a concrete solution.',
+                'error-title':       'Oops...',
+                'error-text-label':  'An error occurred whilst sending.',
+                'retry-btn':         'Try again',
+                'placeholders': {
+                    'nom':         'John Smith',
+                    'email':       'john@company.co.uk',
+                    'telephone':   '+44 7700 900000',
+                    'entreprise':  'E.g.: Smith Studio, My Shop...',
+                    'secteurAutre':'E.g.: Sports coaching, IT Consulting...',
+                    'tache':       'E.g.: I spend 5 hours a week copy-pasting data from my emails into Excel...'
+                },
+                'select-options': {
+                    'secteur': {
+                        '':                                          'Select your sector',
+                        'Agriculture / Agroalimentaire':             'Agriculture / Food Industry',
+                        'Art / Culture / Design':                    'Art / Culture / Design',
+                        'Artisanat / BTP':                          'Trades / Construction',
+                        'Banques / Assurances / Finance':            'Banking / Insurance / Finance',
+                        'Commerce / Distribution / E-commerce':      'Retail / Distribution / E-commerce',
+                        'Communication / Marketing / Publicité':     'Communications / Marketing / Advertising',
+                        'Éducation / Formation':                     'Education / Training',
+                        'Énergie / Environnement':                   'Energy / Environment',
+                        'Hôtellerie / Restauration / Tourisme':      'Hospitality / Catering / Tourism',
+                        'Immobilier':                                'Property / Real Estate',
+                        'Industrie / Fabrication':                   'Industry / Manufacturing',
+                        'Informatique / Tech / SAAS':                'IT / Tech / SaaS',
+                        'Juridique / Conseil':                       'Legal / Consultancy',
+                        'Logistique / Transport':                    'Logistics / Transport',
+                        'Médical / Santé / Pharmacie':               'Medical / Healthcare / Pharmacy',
+                        'Médias / Audiovisuel':                      'Media / Broadcast',
+                        'ONG / Associatif':                          'NGO / Non-profit',
+                        'Ressources Humaines / Recrutement':         'Human Resources / Recruitment',
+                        'Services à la personne':                    'Personal Services',
+                        'Sport / Loisirs':                           'Sport / Leisure',
+                        'Télécommunications':                        'Telecommunications',
+                        'Autre':                                     'Other (please specify)'
+                    },
+                    'temps': {
+                        '':              'Select an estimate',
+                        'Moins de 2h':   'Less than 2h',
+                        '2h à 5h':       '2h to 5h',
+                        '5h à 10h':      '5h to 10h',
+                        'Plus de 10h':   'More than 10h'
+                    },
+                    'outils': {
+                        '':                                        'Select your tools',
+                        'Google Sheets / Excel':                   'Google Sheets / Excel',
+                        'Notion':                                  'Notion',
+                        'CRM (HubSpot, Salesforce, Pipedrive...)': 'CRM (HubSpot, Salesforce, Pipedrive...)',
+                        'Email (Gmail, Outlook...)':               'Email (Gmail, Outlook...)',
+                        'Slack / Teams':                           'Slack / Teams',
+                        'Trello / Asana / Monday':                 'Trello / Asana / Monday',
+                        'Autre':                                   'Other'
+                    },
+                    'budget': {
+                        '':                    'Select a range',
+                        '< 50€':               '< \u20ac50',
+                        '50€ – 100€':          '\u20ac50 \u2013 \u20ac100',
+                        '100€ – 500€':         '\u20ac100 \u2013 \u20ac500',
+                        '500€ – 1000€':        '\u20ac500 \u2013 \u20ac1,000',
+                        '1000€+':              '\u20ac1,000+',
+                        'Je ne sais pas encore':'Not sure yet'
+                    }
+                }
+            }
+        };
+
+        function applyLang(lang) {
+            var t = translations[lang];
+            if (!t) return;
+
+            // innerHTML swap for all [data-i18n] elements
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) el.innerHTML = t[key];
+            });
+
+            // Placeholder swaps
+            var ph = t['placeholders'] || {};
+            Object.keys(ph).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.setAttribute('placeholder', ph[id]);
+            });
+
+            // Select option text swaps (values stay unchanged for backend)
+            var selOpts = t['select-options'] || {};
+            Object.keys(selOpts).forEach(function (selectId) {
+                var sel = document.getElementById(selectId);
+                if (!sel) return;
+                var map = selOpts[selectId];
+                sel.querySelectorAll('option').forEach(function (opt) {
+                    if (map[opt.value] !== undefined) opt.textContent = map[opt.value];
+                });
+            });
+
+            // <html lang>
+            document.documentElement.setAttribute('lang', lang);
+
+            // Page title + meta description
+            document.title = lang === 'en'
+                ? 'Automate Your Repetitive Task'
+                : 'Automatisez votre tâche répétitive';
+            var metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', lang === 'en'
+                    ? 'Tell us which task takes up most of your time — receive a personalised analysis within 24 hours.'
+                    : 'Dites-nous quelle tâche vous prend le plus de temps — recevez une analyse personnalisée sous 24h.');
+            }
+
+            // Toggle button states
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-fr').setAttribute('aria-pressed', lang === 'fr' ? 'true' : 'false');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-en').setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+
+            window.currentLang = lang;
+        }
+
+        window.setLang = function (lang) {
+            applyLang(lang);
+            try { localStorage.setItem('preferred-lang', lang); } catch (e) {}
+            // Reflect language in URL for shareability and SEO crawlers
+            try {
+                var url = new URL(window.location.href);
+                if (lang === 'fr') { url.searchParams.delete('lang'); }
+                else { url.searchParams.set('lang', lang); }
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+        };
+
+        // Priority: URL param > localStorage > default FR
+        (function () {
+            var urlLang = null;
+            try { urlLang = new URLSearchParams(window.location.search).get('lang'); } catch (e) {}
+            var savedLang = null;
+            try { savedLang = localStorage.getItem('preferred-lang'); } catch (e) {}
+            var init = (urlLang && translations[urlLang]) ? urlLang
+                     : (savedLang && translations[savedLang]) ? savedLang
+                     : 'fr';
+            if (init !== 'fr') applyLang(init);
+        }());
+
+        // Attach click handlers without inline onclick (CSP-friendly)
+        document.getElementById('btn-fr').addEventListener('click', function () { window.setLang('fr'); });
+        document.getElementById('btn-en').addEventListener('click', function () { window.setLang('en'); });
+    })();
+    </script>
+    </main>
+</body>
+</html>
